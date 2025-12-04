@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="~{::title}">User Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">User</a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" th:href="@{/books}">Sách</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/authors}">Tác giả</a></li>
+        </ul>
+        <a class="btn btn-outline-primary" th:href="@{/logout}">Đăng xuất</a>
+    </div>
+</nav>
+
+<div class="container mt-4" th:replace="~{::body}"></div>
+</body>
+</html>

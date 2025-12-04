@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${user.id} != null ? 'Sửa User' : 'Thêm User'">User Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4" th:text="${user.id} != null ? 'Sửa User' : 'Thêm User'"></h2>
+
+    <form th:action="@{${user.id} != null ? '/users/update/' + ${user.id} : '/users/save'}"
+          th:object="${user}" method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" th:field="*{username}" class="form-control" id="username" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" th:field="*{password}" class="form-control" id="password"
+                   th:attr="required=${user.id == null}">
+            <small class="form-text text-muted" th:if="${user.id != null}">Để trống nếu không muốn đổi mật khẩu</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="fullName" class="form-label">Họ và tên</label>
+            <input type="text" th:field="*{fullName}" class="form-control" id="fullName">
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" th:field="*{email}" class="form-control" id="email">
+        </div>
+
+        <div class="mb-3">
+            <label for="role" class="form-label">Vai trò</label>
+            <select th:field="*{role}" class="form-select" id="role">
+                <option value="USER" th:selected="${user.role == 'USER'}">USER</option>
+                <option value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
+            </select>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" th:field="*{active}" class="form-check-input" id="active">
+            <label class="form-check-label" for="active">Kích hoạt</label>
+        </div>
+
+        <div class="mb-3">
+            <label for="createdAt" class="form-label">Ngày tạo</label>
+            <input type="text" th:value="${#dates.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss')}"
+                   class="form-control" id="createdAt" readonly>
+        </div>
+
+        <div class="mb-3">
+            <label for="updatedAt" class="form-label">Ngày cập nhật</label>
+            <input type="text" th:value="${#dates.format(user.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"
+                   class="form-control" id="updatedAt" readonly>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a th:href="@{/users}" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
