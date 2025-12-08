@@ -3,24 +3,35 @@ package ttb_QLThuVien.Ttb_entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "ttb_the_loai")
+@Table(name = "ttb_tac_gia")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Ttb_TheLoai {
+public class Ttb_TacGia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ttb_id")
     private Long id;
 
-    @Column(name = "ttb_ten_the_loai", nullable = false)
-    private String tenTheLoai;
+    @Column(name = "ttb_ho_ten", nullable = false, length = 100)
+    private String hoTen;
+
+    @Column(name = "ttb_bi_danh", length = 100)
+    private String biDanh;
+
+    @Column(name = "ttb_nam_sinh")
+    private Integer namSinh;
+
+    @Column(name = "ttb_nam_mat")
+    private Integer namMat;
+
+    @Column(name = "ttb_quoc_tich", length = 50)
+    private String quocTich;
 
     @Column(name = "ttb_mo_ta", columnDefinition = "TEXT")
     private String moTa;
@@ -34,23 +45,17 @@ public class Ttb_TheLoai {
     @Column(name = "ttb_ngay_cap_nhat")
     private LocalDateTime ngayCapNhat;
 
-    // Khi insert mới
     @PrePersist
     public void onCreate() {
         ngayTao = LocalDateTime.now();
         ngayCapNhat = LocalDateTime.now();
         if (trangThai == null) {
-            trangThai = "active"; // mặc định active
+            trangThai = "active"; // mặc định giống SQL
         }
     }
 
-    // Khi update
     @PreUpdate
     public void onUpdate() {
         ngayCapNhat = LocalDateTime.now();
     }
-
-    // Quan hệ 1-n với sách
-    @OneToMany(mappedBy = "theLoai", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ttb_Sach> sachList;
 }

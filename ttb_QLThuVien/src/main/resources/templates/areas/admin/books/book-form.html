@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.id == null} ? 'Thêm sách mới' : 'Sửa sách'">Thêm/Sửa sách</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        .img-thumbnail {
+            max-height: 150px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 th:text="${book.id == null} ? 'Thêm sách mới' : 'Sửa sách'">Thêm/Sửa sách</h2>
+
+    <form th:action="@{/admin/books/save}" th:object="${book}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{id}"/>
+
+        <!-- Tiêu đề -->
+        <div class="mb-3">
+            <label class="form-label">Tiêu đề</label>
+            <input type="text" th:field="*{tieuDe}" class="form-control" placeholder="Nhập tiêu đề" required>
+        </div>
+
+        <!-- Tác giả (multi-select) -->
+        <div class="mb-3">
+            <label class="form-label">Tác giả</label>
+            <select th:field="*{tacGias}" multiple class="form-select">
+                <option th:each="tg : ${tacGias}" th:value="${tg.id}" th:text="${tg.hoTen}"
+                        th:selected="${book.tacGias != null and #lists.contains(book.tacGias, tg)}">
+                </option>
+            </select>
+        </div>
+
+        <!-- ISBN -->
+        <div class="mb-3">
+            <label class="form-label">ISBN</label>
+            <input type="text" th:field="*{maIsbn}" class="form-control" placeholder="123-456-789">
+        </div>
+
+        <!-- Năm xuất bản -->
+        <div class="mb-3">
+            <label class="form-label">Năm xuất bản</label>
+            <input type="number" th:field="*{namXuatBan}" class="form-control" placeholder="2025">
+        </div>
+
+        <!-- Số trang -->
+        <div class="mb-3">
+            <label class="form-label">Số trang</label>
+            <input type="number" th:field="*{soTrang}" class="form-control" placeholder="200">
+        </div>
+
+        <!-- Nhà xuất bản -->
+        <div class="mb-3">
+            <label class="form-label">Nhà xuất bản</label>
+            <input type="text" th:field="*{nhaXuatBan}" class="form-control" placeholder="Tên nhà xuất bản">
+        </div>
+
+        <!-- Ngôn ngữ -->
+        <div class="mb-3">
+            <label class="form-label">Ngôn ngữ</label>
+            <select th:field="*{ngonNgu}" class="form-select">
+                <option value="Tiếng Việt" th:selected="${book.ngonNgu == 'Tiếng Việt'}">Tiếng Việt</option>
+                <option value="English" th:selected="${book.ngonNgu == 'English'}">English</option>
+            </select>
+        </div>
+
+        <!-- Số lượng -->
+        <div class="mb-3">
+            <label class="form-label">Số lượng</label>
+            <input type="number" th:field="*{soLuong}" class="form-control" placeholder="10">
+        </div>
+
+        <!-- Trạng thái -->
+        <div class="mb-3">
+            <label class="form-label">Trạng thái</label>
+            <select th:field="*{trangThai}" class="form-select">
+                <option value="available" th:selected="${book.trangThai == 'available'}">Available</option>
+                <option value="unavailable" th:selected="${book.trangThai == 'unavailable'}">Unavailable</option>
+            </select>
+        </div>
+
+        <!-- Thể loại -->
+        <div class="mb-3">
+            <label class="form-label">Thể loại</label>
+            <select th:field="*{theLoai}" class="form-select">
+                <option th:each="tl : ${theLoais}" th:value="${tl.id}" th:text="${tl.tenTheLoai}"
+                        th:selected="${book.theLoai != null && book.theLoai.id == tl.id}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Mô tả -->
+        <div class="mb-3">
+            <label class="form-label">Mô tả</label>
+            <textarea th:field="*{moTa}" class="form-control" rows="4" placeholder="Nhập mô tả sách..."></textarea>
+        </div>
+
+        <!-- Ảnh bìa -->
+        <div class="mb-3">
+            <label class="form-label">Ảnh bìa</label>
+            <input type="file" th:field="*{anhBiaFile}" class="form-control">
+            <div th:if="${book.anhBia != null}" class="mt-2">
+                <img th:src="@{${book.anhBia}}" alt="Ảnh bìa" class="img-thumbnail">
+            </div>
+        </div>
+
+        <!-- Ngày tạo và ngày cập nhật (chỉ hiển thị, không sửa) -->
+        <div class="mb-3 row">
+            <div class="col">
+                <label class="form-label">Ngày tạo</label>
+                <input type="text" class="form-control" th:value="${book.ngayTao != null ? #temporals.format(book.ngayTao, 'dd/MM/yyyy HH:mm') : ''}" readonly>
+            </div>
+            <div class="col">
+                <label class="form-label">Ngày cập nhật</label>
+                <input type="text" class="form-control" th:value="${book.ngayCapNhat != null ? #temporals.format(book.ngayCapNhat, 'dd/MM/yyyy HH:mm') : ''}" readonly>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a th:href="@{/admin/books}" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -9,37 +9,40 @@
 <div class="container mt-5">
     <h2>Thêm / Sửa Người Dùng</h2>
     <form th:action="@{/admin/users/save}" th:object="${user}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
         <div class="mb-3">
             <label>Username</label>
-            <input type="text" th:field="*{ttb_username}" class="form-control" required>
+            <input type="text" th:field="*{username}" class="form-control" required>
         </div>
         <div class="mb-3">
             <label>Mật khẩu</label>
-            <input type="password" th:field="*{ttb_password}" class="form-control" required>
+            <input type="password" th:field="*{password}" class="form-control" required>
         </div>
         <div class="mb-3">
             <label>Họ Tên</label>
-            <input type="text" th:field="*{ttb_ho_ten}" class="form-control" required>
+            <input type="text" th:field="*{hoTen}" class="form-control" required>
         </div>
         <div class="mb-3">
             <label>Email</label>
-            <input type="email" th:field="*{ttb_email}" class="form-control" required>
+            <input type="email" th:field="*{email}" class="form-control" required>
         </div>
         <div class="mb-3">
             <label>Vai Trò</label>
-            <select th:field="*{ttb_vai_tro}" class="form-control">
+            <select th:field="*{vaiTro}" class="form-control">
                 <option value="ROLE_USER">User</option>
                 <option value="ROLE_ADMIN">Admin</option>
                 <option value="ROLE_KHO">Kho</option>
             </select>
         </div>
         <div class="mb-3 form-check">
-            <input type="checkbox" th:field="*{ttb_active}" class="form-check-input">
+            <input type="checkbox" th:field="*{active}" class="form-check-input">
             <label class="form-check-label">Kích Hoạt</label>
         </div>
         <button type="submit" class="btn btn-primary">Lưu</button>
         <a th:href="@{/admin/users}" class="btn btn-secondary">Hủy</a>
     </form>
+
 </div>
 </body>
 </html>

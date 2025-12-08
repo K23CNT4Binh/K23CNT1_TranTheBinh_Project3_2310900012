@@ -1,4 +1,4 @@
-package ttb_QLThuVien.Ttb_areas.Ttb_Admin.Ttb_service;
+package ttb_QLThuVien.Ttb_service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,12 +34,12 @@ public class Ttb_SachService {
         return sachRepository.findByTieuDeContainingIgnoreCase(tieuDe);
     }
 
-    public List<Ttb_Sach> findByTacGia(String tacGia) {
-        return sachRepository.findByTacGiaContainingIgnoreCase(tacGia);
+    // ⭐ Sửa tên phương thức đúng ManyToMany
+    public List<Ttb_Sach> findByTacGia(String tenTacGia) {
+        return sachRepository.findByTacGias_HoTenContainingIgnoreCase(tenTacGia);
     }
 
     public List<Ttb_Sach> findByTheLoaiId(Long theLoaiId) {
         return sachRepository.findByTheLoaiId(theLoaiId);
     }
 }
-

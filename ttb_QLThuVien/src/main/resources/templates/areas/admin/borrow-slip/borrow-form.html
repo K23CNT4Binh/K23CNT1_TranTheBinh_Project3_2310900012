@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form phiếu mượn</title>
+</head>
+<body>
+
+<h1 th:text="${borrow.id == null} ? 'Tạo phiếu mượn' : 'Cập nhật phiếu mượn'"></h1>
+
+<form th:action="@{/admin/borrow/save}" th:object="${borrow}" method="post">
+
+    <input type="hidden" th:field="*{id}"/>
+
+    <label>Mã phiếu:</label>
+    <input type="text" th:field="*{maPhieu}" required/>
+    <br><br>
+
+    <label>Ngày mượn:</label>
+    <input type="date" th:field="*{ngayMuon}" required/>
+    <br><br>
+
+    <label>Ngày trả:</label>
+    <input type="date" th:field="*{ngayTra}"/>
+    <br><br>
+
+    <label>Trạng thái:</label>
+    <select th:field="*{trangThai}">
+        <option value="cho_duyet">Chờ duyệt</option>
+        <option value="dang_muon">Đang mượn</option>
+        <option value="da_tra">Đã trả</option>
+        <option value="qua_han">Quá hạn</option>
+        <option value="tu_choi">Từ chối</option>
+    </select>
+    <br><br>
+
+    <label>Người dùng:</label>
+    <select th:field="*{user.id}">
+        <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.username}"></option>
+    </select>
+    <br><br>
+
+    <button type="submit">Lưu</button>
+</form>
+
+</body>
+</html>

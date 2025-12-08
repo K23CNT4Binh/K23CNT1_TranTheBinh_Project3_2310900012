@@ -1,4 +1,4 @@
-package ttb_QLThuVien.Ttb_areas.Ttb_Admin.Ttb_service;
+package ttb_QLThuVien.Ttb_service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,4 +33,11 @@ public class Ttb_NguoiDungService {
     public Optional<Ttb_NguoiDung> getByUsername(String username) {
         return nguoiDungRepository.findByUsername(username);
     }
+
+    // ✅ Thêm phương thức kiểm tra username tồn tại
+    public boolean existsByUsername(String username) {
+        return nguoiDungRepository.findByUsername(username).isPresent();
+    }
 }
+
+

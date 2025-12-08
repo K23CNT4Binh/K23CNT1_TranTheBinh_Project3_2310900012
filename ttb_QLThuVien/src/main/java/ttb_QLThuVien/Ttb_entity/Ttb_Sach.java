@@ -2,7 +2,10 @@ package ttb_QLThuVien.Ttb_entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "ttb_sach")
@@ -20,9 +23,6 @@ public class Ttb_Sach {
 
     @Column(name = "ttb_tieu_de", nullable = false)
     private String tieuDe;
-
-    @Column(name = "ttb_tac_gia", nullable = false)
-    private String tacGia;
 
     @Column(name = "ttb_ma_isbn", unique = true)
     private String maIsbn;
@@ -48,6 +48,9 @@ public class Ttb_Sach {
     @Column(name = "ttb_anh_bia")
     private String anhBia;
 
+    @Transient
+    private MultipartFile anhBiaFile;
+
     @Column(name = "ttb_trang_thai")
     private String trangThai = "available";
 
@@ -62,7 +65,16 @@ public class Ttb_Sach {
         this.ngayCapNhat = LocalDateTime.now();
     }
 
-    // Quan hệ ManyToOne với TheLoai
+    // ⭐ ManyToMany với tác giả
+    @ManyToMany
+    @JoinTable(
+            name = "ttb_sach_tac_gia",
+            joinColumns = @JoinColumn(name = "ttb_sach_id"),
+            inverseJoinColumns = @JoinColumn(name = "ttb_tac_gia_id")
+    )
+    private List<Ttb_TacGia> tacGias;
+
+    // ⭐ ManyToOne với thể loại
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ttb_the_loai_id")
     private Ttb_TheLoai theLoai;

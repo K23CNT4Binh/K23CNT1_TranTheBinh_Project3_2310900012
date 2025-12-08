@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sách</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            background-color: #ffffff;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .table thead {
+            background-color: #e9ecef;
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f1f3f5;
+        }
+        .btn-action {
+            margin: 2px 0;
+        }
+        .img-thumbnail {
+            max-height: 80px;
+            border-radius: 5px;
+        }
+        .table-responsive {
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="mb-0">Danh sách sách</h3>
+            <a th:href="@{/admin/books/add}" class="btn btn-success btn-sm">Thêm sách mới</a>
+        </div>
+        <div class="card-body p-2">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                    <thead class="text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tiêu đề</th>
+                        <th>Tác giả</th>
+                        <th>ISBN</th>
+                        <th>Thể loại</th>
+                        <th>Năm XB</th>
+                        <th>Số trang</th>
+                        <th>Nhà XB</th>
+                        <th>Ngôn ngữ</th>
+                        <th>Số lượng</th>
+                        <th>Trạng thái</th>
+                        <th>Mô tả</th>
+                        <th>Ảnh bìa</th>
+                        <th>Ngày tạo</th>
+                        <th>Ngày cập nhật</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="book : ${books}">
+                        <td th:text="${book.id}"></td>
+                        <td th:text="${book.tieuDe}"></td>
+                        <td>
+                                <span th:each="tg, iterStat : ${book.tacGias}">
+                                    <span th:text="${tg.hoTen}"></span>
+                                    <span th:if="${!iterStat.last}">, </span>
+                                </span>
+                        </td>
+                        <td th:text="${book.maIsbn}"></td>
+                        <td th:text="${book.theLoai != null ? book.theLoai.tenTheLoai : ''}"></td>
+                        <td th:text="${book.namXuatBan}"></td>
+                        <td th:text="${book.soTrang}"></td>
+                        <td th:text="${book.nhaXuatBan}"></td>
+                        <td th:text="${book.ngonNgu}"></td>
+                        <td th:text="${book.soLuong}"></td>
+                        <td th:text="${book.trangThai}"></td>
+                        <td th:text="${book.moTa}"></td>
+                        <td>
+                            <img th:if="${book.anhBia != null}" th:src="@{${book.anhBia}}" class="img-thumbnail"/>
+                        </td>
+                        <td th:text="${#temporals.format(book.ngayTao, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${#temporals.format(book.ngayCapNhat, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td>
+                            <div class="d-flex flex-column">
+                                <a th:href="@{'/admin/books/edit/' + ${book.id}}" class="btn btn-primary btn-sm btn-action">Sửa</a>
+                                <a th:href="@{'/admin/books/delete/' + ${book.id}}" class="btn btn-danger btn-sm btn-action"
+                                   onclick="return confirm('Bạn có chắc muốn xóa sách này?');">Xóa</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(books)}">
+                        <td colspan="17">Không có sách nào</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
